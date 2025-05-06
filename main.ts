@@ -14,6 +14,20 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     mySprite.y += 20
     info.changeScoreBy(10)
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
+    sprites.destroy(otherSprite)
+    sprite.setPosition(80, 112)
+    info.changeScoreBy(100)
+    TruffleCount += -1
+    music.play(music.melodyPlayable(music.baDing), music.PlaybackMode.UntilDone)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    info.changeLifeBy(-1)
+    music.play(music.melodyPlayable(music.bigCrash), music.PlaybackMode.UntilDone)
+    mySprite.setPosition(80, 112)
+})
+let mySprite3: Sprite = null
+let MySprite4: Sprite = null
 let mySprite: Sprite = null
 let TruffleCount = 7
 info.setLife(3)
@@ -91,15 +105,15 @@ scene.setBackgroundImage(img`
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    5555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555
-    5555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555
-    5555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555
-    5555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555
-    5555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+    555555555555555555555555555dddddddd555555555555555555555555ddddddddd5555555555555555555555ddddddddddd555555555555555555555555dddddddddddd55555555555555555555555
+    555555555555555555555555555dddddddd555555555555555555555555ddddddddd5555555555555555555555ddddddddddd555555555555555555555555dddddddddddd55555555555555555555555
+    555555555555555555555555555dddddddd555555555555555555555555ddddddddd5555555555555555555555ddddddddddd555555555555555555555555dddddddddddd55555555555555555555555
+    555555555555555555555555555dddddddd555555555555555555555555ddddddddd5555555555555555555555ddddddddddd555555555555555555555555dddddddddddd55555555555555555555555
+    555555555555555555555555555dddddddd555555555555555555555555ddddddddd5555555555555555555555ddddddddddd555555555555555555555555dddddddddddd55555555555555555555555
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
@@ -218,4 +232,158 @@ Truffle = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     `, SpriteKind.Food)
-Truffle.setPosition(19, 10)
+Truffle.setPosition(39, 10)
+Truffle = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . b b b b b b b b b b . . . 
+    . . . b b b b b b b b b b . . . 
+    . . . b b b b b b b b b b . . . 
+    . . . b b b b b b b b b b . . . 
+    . . b b b b b b b b b b b b . . 
+    . . b b b b b b b b b b b b . . 
+    . . b b b b b b b b b b b b . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.Food)
+Truffle.setPosition(59, 10)
+Truffle = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . b b b b b b b b b b . . . 
+    . . . b b b b b b b b b b . . . 
+    . . . b b b b b b b b b b . . . 
+    . . . b b b b b b b b b b . . . 
+    . . b b b b b b b b b b b b . . 
+    . . b b b b b b b b b b b b . . 
+    . . b b b b b b b b b b b b . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.Food)
+Truffle.setPosition(79, 10)
+Truffle = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . b b b b b b b b b b . . . 
+    . . . b b b b b b b b b b . . . 
+    . . . b b b b b b b b b b . . . 
+    . . . b b b b b b b b b b . . . 
+    . . b b b b b b b b b b b b . . 
+    . . b b b b b b b b b b b b . . 
+    . . b b b b b b b b b b b b . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.Food)
+Truffle.setPosition(99, 10)
+Truffle = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . b b b b b b b b b b . . . 
+    . . . b b b b b b b b b b . . . 
+    . . . b b b b b b b b b b . . . 
+    . . . b b b b b b b b b b . . . 
+    . . b b b b b b b b b b b b . . 
+    . . b b b b b b b b b b b b . . 
+    . . b b b b b b b b b b b b . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.Food)
+Truffle.setPosition(119, 10)
+Truffle = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . b b b b b b b b b b . . . 
+    . . . b b b b b b b b b b . . . 
+    . . . b b b b b b b b b b . . . 
+    . . . b b b b b b b b b b . . . 
+    . . b b b b b b b b b b b b . . 
+    . . b b b b b b b b b b b b . . 
+    . . b b b b b b b b b b b b . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . d d d d . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.Food)
+Truffle.setPosition(139, 10)
+game.onUpdate(function () {
+    if (TruffleCount <= 0) {
+        game.setGameOverEffect(true, effects.confetti)
+        game.gameOver(true)
+    }
+})
+game.onUpdate(function () {
+    if (info.life() <= 0) {
+        game.setGameOverEffect(false, effects.dissolve)
+        game.gameOver(false)
+    }
+})
+game.onUpdateInterval(5000, function () {
+    MySprite4 = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . 8 8 8 8 8 8 8 8 8 . . . . . . 
+        . 8 8 8 8 8 8 8 8 8 1 1 1 1 . . 
+        . 8 8 8 8 8 8 8 8 8 f 1 1 1 5 . 
+        . 8 8 8 8 8 8 8 8 8 f 1 1 1 . . 
+        . 8 8 8 8 8 8 8 8 8 f 1 1 1 . . 
+        . 8 8 8 8 8 8 8 8 8 f 1 1 1 5 . 
+        . 8 8 8 8 8 8 8 8 8 1 1 1 1 . . 
+        . 8 8 8 8 8 8 8 8 8 . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.Enemy)
+    MySprite4.setPosition(-20, 71)
+    MySprite4.setVelocity(randint(20, 30), 0)
+})
+game.onUpdateInterval(6000, function () {
+    mySprite3 = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . 2 2 2 2 5 5 5 1 1 1 1 1 1 5 
+        . . 2 2 2 2 1 1 1 5 1 1 1 1 5 1 
+        . 5 2 2 2 f 1 1 1 1 5 1 1 5 1 1 
+        . . 2 2 2 f 1 1 1 1 1 5 5 1 1 1 
+        . . 2 2 2 f 1 1 1 1 1 5 5 1 1 1 
+        . 5 2 2 2 f 1 1 1 1 5 1 1 5 1 1 
+        . . 2 2 2 2 1 1 1 5 1 1 1 1 5 1 
+        . . 2 2 2 2 5 5 5 1 1 1 1 1 1 5 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.Enemy)
+    mySprite3.setPosition(240, 50)
+    mySprite3.setVelocity(randint(-20, -25), 0)
+})
+game.onUpdateInterval(500, function () {
+    mySprite2.x += randint(-20, 20)
+})
